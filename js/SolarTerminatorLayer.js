@@ -11,7 +11,7 @@ define([
     "dojo/on",
     "dojo/Deferred",
     // load template
-    "dojo/text!application/dijit/templates/LocateButton.html",
+    "dojo/text!application/dijit/templates/SolarTerminator.html",
     "dojo/i18n!application/nls/jsapi",
     "dojo/dom-class",
     "dojo/dom-style",
@@ -45,7 +45,7 @@ function (
     GraphicsLayer, SimpleFillSymbol,
     Polygon, webMercatorUtils
 ) {
-    var Widget = declare([_WidgetBase, _TemplatedMixin, Evented], {
+    var Widget = declare([_WidgetBase, _TemplatedMixin, Evented, GraphicsLayer], {
         declaredClass: "esri.dijit.LocateButton",
         templateString: dijitTemplate,
         options: {
@@ -75,7 +75,7 @@ function (
                 this.set("refreshIntervalMs", defaults.refreshIntervalMs);
                 this.set("symbol", defaults.symbol); 
                 this.set("visible", defaults.visible); 
-                this.set("graphicsLayer", defaults.graphicsLayer); 
+                //this.set("graphicsLayer", defaults.graphicsLayer); 
                 this._css = {
                 container: "locateContainer",
                 locate: "zoomLocateButton",
@@ -86,10 +86,14 @@ function (
         // bind listener for button to action
         postCreate: function() {
             this.inherited(arguments);
-            this.own(on(this._locateNode, a11yclick, lang.hitch(this, this.locate)));
+            //this.own(on(this._locateNode, a11yclick, lang.hitch(this, this.locate)));
+            this.own(on(this._locateNode, a11yclick, lang.hitch(this, this.onVisibilityChange)));
         },
         // start widget. called by user
         startup: function() {
+            var nightGraphicLayer = new GraphicsLayer({id: "nightGraphicLayer"});
+            this.get("map").addLayer(nightGraphicLayer);
+            
             // map not defined
             if (!this.get("map")) {
                 this.destroy();
@@ -98,10 +102,12 @@ function (
             // when map is loaded
             if (this.get("map").loaded) {
                 this._init();
+                
+                
             } else {
                 on.once(this.get("map"), "load", lang.hitch(this, function() {
                     this._init();
-                }));
+                }));                            
             }
         },
         // connections/subscriptions will be cleaned up during the destroy() lifecycle phase
@@ -135,29 +141,32 @@ function (
                 this.set("highlightGraphic", null);
             }
         },
-        locate: function() {
-            // toggle tracking
-            this.get("graphicsLayer").clear();
+        refresh : function () {
+        	this.get("map").getLayer("nightGraphicLayer").clear();
             this.inherited(arguments);
-                this.clear();
-                var geoms = this._getGeometries();
-                for (var i = 0; i < geoms.length; i++) {
-                    this.get("graphicsLayer").add(new Graphic(geoms[i], this.symbol));
-                }
-            return this._locate();
+        	this.clear();
+        	var geoms = this._getGeometries();
+        	for (var i = 0; i < geoms.length; i++) {
+        		this.get("map").getLayer("nightGraphicLayer").add(new Graphic(geoms[i], this.symbol));
+        	}
         },
+        onVisibilityChange : function () {            
+        	if (this.visible) {        		
+                this._detachInterval();
+                this.get("map").getLayer("nightGraphicLayer").clear();
+                this.visible = false;
+        	} else {
+        		this.get("map").getLayer("nightGraphicLayer").clear();
+                this.refresh();
+                this._attachInterval();                
+                this.visible = true;
+        	}
+        },        
         
         /* ---------------- */
         /* Private Functions */
         /* ---------------- */
-        onVisibilityChange : function (visibility) {
-                this.inherited(arguments);
-                if (visibility) {
-                    this._attachInterval();
-                } else {
-                    this._detachInterval();
-                }
-            },
+        
             // private functions 
             _attachInterval : function () {
                 if (this._interval != null) {
