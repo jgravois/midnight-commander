@@ -152,6 +152,12 @@ define({
                     "stopTracking":"Stop tracking location"
                 }
             },
+            solarTerminatorButton: {
+                "solarTerminator": {
+                    "button": "Solar Terminator",
+                    "title": "Solar Terminator"
+                }
+            },
             overviewMap: {
                 NLS_drag: "Drag To Change The Map Extent",
                 NLS_show: "Show Map Overview",

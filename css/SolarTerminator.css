@@ -17,7 +17,7 @@
 	-moz-border-radius:5px;
 	-o-border-radius:5px;
 	border-radius:5px;
-	background-image:url(../images/locate.png);
+	background-image:url(../images/sun.png);
 	background-position:center center;
 	background-repeat:no-repeat;
 }
@@ -30,12 +30,4 @@
 .LocateButton .zoomLocateButton:active {
 	background-color:#ccc;
 	background-color:rgba(102,102,102,0.60);
-}
-
-.LocateButton .loading {
-	background-image:url(../images/locate-spinner.gif);
-}
-
-.LocateButton .tracking {
-	background-image:url(../images/stop.png) !important;
 }

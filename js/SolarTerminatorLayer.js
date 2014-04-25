@@ -1,3 +1,25 @@
+/*
+to do
+      need to get rid of 'locate' in CSS references
+      why do we have to wait for layer-add-result to call startup()
+      can we avoid hardcoding 'extras...html' in the .js define()
+      add github.io page
+      add doc (following driskull style)
+      confirm whether public methods operate as expected (ie. with time slider)      
+      get events to be emitted
+      add destroy method
+      share with Jim Blaney
+      
+      optional:
+      convert to work in Web Application Builder
+      modify CSS when the sun button is turned on/being hovered over
+      
+      resources:
+      http://www.arcgis.com/home/item.html?id=6c65b0f17ffc4bfdb71f60ca64d40bcc      
+      http://solarterminator-esri-jsapi.googlecode.com/svn/trunk/layer.html      
+      dereks working version with external button http://10.111.13.3/~dere4925/esri/solar-terminator/amd/sun.html
+*/
+
 define([
     "dojo/Evented",
     "dojo/_base/declare",
@@ -11,8 +33,8 @@ define([
     "dojo/on",
     "dojo/Deferred",
     // load template
-    "dojo/text!application/dijit/templates/SolarTerminator.html",
-    "dojo/i18n!application/nls/jsapi",
+    "dojo/text!extras/dijit/templates/SolarTerminator.html",
+    "dojo/i18n!extras/nls/jsapi",
     "dojo/dom-class",
     "dojo/dom-style",
     "dojo/dom-attr",
@@ -20,7 +42,6 @@ define([
     "esri/SpatialReference",
     "esri/graphic",
     "esri/symbols/PictureMarkerSymbol",
-    //erwin add
     "dojo/_base/Color",
     "dojo/_base/connect",
     "esri/layers/GraphicsLayer",
@@ -33,27 +54,39 @@ function (
     Evented,
     declare,
     lang,
-    has, esriNS, esriConfig,
-    _WidgetBase, a11yclick, _TemplatedMixin,
+    has,
+    esriNS,
+    esriConfig,
+    _WidgetBase, 
+    a11yclick, 
+    _TemplatedMixin,
     on,
     Deferred,
-    dijitTemplate, i18n,
-    domClass, domStyle, domAttr,
-    Point, SpatialReference,
-    Graphic, PictureMarkerSymbol,
-    Color, connect,
-    GraphicsLayer, SimpleFillSymbol,
-    Polygon, webMercatorUtils
+    dijitTemplate, 
+    i18n,
+    domClass, 
+    domStyle, 
+    domAttr,
+    Point, 
+    SpatialReference,
+    Graphic,
+    PictureMarkerSymbol,
+    Color, 
+    connect,
+    GraphicsLayer, 
+    SimpleFillSymbol,
+    Polygon, 
+    webMercatorUtils
 ) {
     var Widget = declare([_WidgetBase, _TemplatedMixin, Evented, GraphicsLayer], {
-        declaredClass: "esri.dijit.LocateButton",
+        declaredClass: "esri.dijit.SolarTerminatorButton",
         templateString: dijitTemplate,
         options: {
             theme: "LocateButton",
            id : null,
                 map: null,
                 dateTime : null,
-                refreshIntervalMs : 5000,
+                refreshIntervalMs : 15000,
                 graphicsLayer: null,
                 symbol : new SimpleFillSymbol("solid", null, new Color([0, 0, 0, 0.35])),
                 _interval : null,
@@ -74,20 +107,16 @@ function (
                 this.set("dateTime", defaults.dateTime);
                 this.set("refreshIntervalMs", defaults.refreshIntervalMs);
                 this.set("symbol", defaults.symbol); 
-                this.set("visible", defaults.visible); 
-                //this.set("graphicsLayer", defaults.graphicsLayer); 
+                this.set("visible", false);                 
                 this._css = {
-                container: "locateContainer",
-                locate: "zoomLocateButton",
-                loading: "loading",
-                tracking: "tracking"
+                container: "solarTerminatorContainer",                
+                solar: "zoomLocateButton"
                 };
         },
         // bind listener for button to action
         postCreate: function() {
             this.inherited(arguments);
-            //this.own(on(this._locateNode, a11yclick, lang.hitch(this, this.locate)));
-            this.own(on(this._locateNode, a11yclick, lang.hitch(this, this.onVisibilityChange)));
+            this.own(on(this._solarNode, a11yclick, lang.hitch(this, this.onVisibilityChange)));
         },
         // start widget. called by user
         startup: function() {
@@ -97,12 +126,11 @@ function (
             // map not defined
             if (!this.get("map")) {
                 this.destroy();
-                console.log('LocateButton::map required');
+                console.log('SolarTerminator::map required');
             }
             // when map is loaded
             if (this.get("map").loaded) {
-                this._init();
-                
+                this._init();                
                 
             } else {
                 on.once(this.get("map"), "load", lang.hitch(this, function() {
@@ -151,15 +179,14 @@ function (
         	}
         },
         onVisibilityChange : function () {            
-        	if (this.visible) {        		
-                this._detachInterval();
-                this.get("map").getLayer("nightGraphicLayer").clear();
-                this.visible = false;
-        	} else {
-        		this.get("map").getLayer("nightGraphicLayer").clear();
+        	//update visibility property
+            this.visible = !this.visible;            
+            if (this.visible) {
                 this.refresh();
-                this._attachInterval();                
-                this.visible = true;
+                this._attachInterval();             
+        	} else {
+        		this._detachInterval();
+                this.get("map").getLayer("nightGraphicLayer").clear();                
         	}
         },        
         
@@ -251,7 +278,7 @@ function (
             }
     });
     if (has("extend-esri")) {
-        lang.setObject("dijit.LocateButton", Widget, esriNS);
+        lang.setObject("dijit.SolarTerminatorButton", Widget, esriNS);
     }
     return Widget;
 });

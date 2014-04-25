@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=7" />
-    <title>Solar Terminator Layer - Esri JSAPI</title>
-    <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.8/js/esri/css/esri.css">
+    <title>Solar Terminator Layer - Esri JS API</title>
+    <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/esri/css/esri.css">
     <link rel="stylesheet" type="text/css" href="css/SolarTerminator.css">
     <style>
       html, body { 
@@ -29,42 +29,27 @@
       #SunButton{
         position:absolute;
         top:95px;
-        left:20px;
+        left:27px;
         z-index:50;
        }      
     </style>    
   </head>
   <body class="claro">
-    <div id="splash"></div>
+      <div id="splash"></div>
     <div id="map">
-      <div id="SunButton"></div>      
-    <script>
-      /*to do
-      figure out why we have to wait for layer-add-result to call startup()
-      figure out whether we can avoid hardcoding something like 'application...html' in the .js define()
-      follow driskull github repo structure
-      confirm whether public methods operate as expected (ie. with time slider)
-      make gh-pages branch
-      share with Jim Blaney
-      
-      optional:
-      convert to work in Web Application Builder
-      
-      resources:
-      http://www.arcgis.com/home/item.html?id=6c65b0f17ffc4bfdb71f60ca64d40bcc      
-      http://solarterminator-esri-jsapi.googlecode.com/svn/trunk/layer.html      
-      dereks working version with external button http://10.111.13.3/~dere4925/esri/solar-terminator/amd/sun.html
-      
-      */
+      <div id="SunButton"></div>
+    </div>
+    <!--h2>All Options</h2>
+    <script src="https://gist.github.com/jgravois/11306049.js"></script-->
+    <script>      
       var injectStylesheet = function(url) {
         var e  = document.createElement("link");
         e.rel  = "stylesheet";
         e.href = url;
         document.getElementsByTagName("head")[0].appendChild(e);
       };
-      
-      injectStylesheet("http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dojo/resources/dojo.css");
-      injectStylesheet("http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css");
+            
+      injectStylesheet("http://js.arcgis.com/3.9/js/dojo/dijit/themes/claro/claro.css");
       injectStylesheet = null;
     </script>
     <script>
@@ -73,16 +58,16 @@
       var djConfig = {
         parseOnLoad: false,
         packages: [{
-                name: "application",
+                name: "extras",
                 location: package_path + '/js'
             }]
       };      
     </script>
-    <script src="http://js.arcgis.com/3.8"></script>
+    <script src="http://js.arcgis.com/3.9"></script>
     <script>
       require([
       		"esri/map",
-            "application/SolarTerminatorLayer",
+            "extras/SolarTerminatorLayer",
       		"dojo/_base/fx",
       		"dojo/dom-construct",
       		"dojo/parser"
@@ -95,16 +80,15 @@
 
       	parser.parse();      	
 
-      	var map = new Map("map", {
-      			wrapAround180 : true,
-                basemap: "topo",
-                center: [0,0],
+      	var map = new Map("map", {      			
+                basemap: "osm",
+                center: [-40,20],
                 zoom: 2
       		});        
-            
+        
+        //why do we have to wait to instantiate the widget?        
       	map.on("layer-add-result", function () {        
-            sun = new SolarTerminatorLayer({                
-                visible: false,
+            sun = new SolarTerminatorLayer({
                 map: map
             }, "SunButton");
             sun.startup();
