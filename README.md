@@ -11,10 +11,12 @@ see it in action [here](https://jgravois.github.io/midnight-commander/)
 
 Basic use
 
+```
 var sun = new SolarTerminatorLayer({
   map: map
 }, "SunButton");
 sun.startup();
+```
 
  [New to Github? Get started here.](https://github.com/)
 
