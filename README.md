@@ -1,7 +1,7 @@
 # midnight-commander
 
 ## Features
-AMD version of Jim Blaney's Day/Night Terminator http://www.arcgis.com/home/item.html?id=6c65b0f17ffc4bfdb71f60ca64d40bcc
+AMD version of Jim Blaney's Day/Night Terminator<br> http://www.arcgis.com/home/item.html?id=6c65b0f17ffc4bfdb71f60ca64d40bcc
 
 see it in action [here](https://jgravois.github.io/midnight-commander/)
 
