@@ -7,32 +7,32 @@
     <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/esri/css/esri.css">
     <link rel="stylesheet" type="text/css" href="css/SolarTerminator.css">
     <style>
-      html, body { 
+      html, body {
         overflow: hidden;
-      }      
+      }
       #splash {
-        position:   fixed;
-        top:        0; 
-        right:      0; 
-        bottom:     0; 
-        left:       0;
-        z-index:    99;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 99;
         background: white center no-repeat fixed url("images/splash.gif");
-      }      
+      }
       #map {
         position: fixed;
-        top:      0; 
-        right:    0; 
-        bottom:   0; 
-        left:     0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
       }
       #SunButton{
-        position:absolute;
-        top:95px;
-        left:20px;
-        z-index:50;
-       }      
-    </style>    
+        position: absolute;
+        top: 95px;
+        left: 20px;
+        z-index: 50;
+      }
+    </style>
   </head>
   <body class="claro">
       <div id="splash"></div>
@@ -41,64 +41,61 @@
     </div>
     <!--h2>All Options</h2>
     <script src="https://gist.github.com/jgravois/11306049.js"></script-->
-    <script>      
+    <script>
       var injectStylesheet = function(url) {
         var e  = document.createElement("link");
         e.rel  = "stylesheet";
         e.href = url;
         document.getElementsByTagName("head")[0].appendChild(e);
       };
-            
-      injectStylesheet("http://js.arcgis.com/3.9/js/dojo/dijit/themes/claro/claro.css");
+
+      injectStylesheet("http://js.arcgis.com/3.11/dijit/themes/claro/claro.css");
       injectStylesheet = null;
     </script>
     <script>
       var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-      
+
       var djConfig = {
         parseOnLoad: false,
         packages: [{
-                name: "extras",
-                location: package_path + '/js'
-            }]
-      };      
+          name: "extras",
+          location: package_path + '/js'
+        }]
+      };
     </script>
-    <script src="http://js.arcgis.com/3.9"></script>
+    <script src="http://js.arcgis.com/3.11"></script>
     <script>
       require([
-      		"esri/map",
-            "extras/SolarTerminatorLayer",
-      		"dojo/_base/fx",
-      		"dojo/dom-construct",
-      		"dojo/parser"
-      	], function (
-      		Map,
-            SolarTerminatorLayer,
-      		fx,
-      		domConstruct,
-      		parser) {
+        "esri/map",
+        "extras/SolarTerminator",
+        "dojo/_base/fx",
+        "dojo/dom-construct",
+        "dojo/parser"
+      ], function(
+        Map,
+        SolarTerminator,
+        fx,
+        domConstruct,
+        parser) {
 
-      	parser.parse();      	
+        parser.parse();
 
-      	var map = new Map("map", {      			
-                basemap: "osm",
-                center: [-40,20],
-                zoom: 2
-      		});        
-        
-        //why do we have to wait to instantiate the widget?        
-      	map.on("layer-add-result", function () {        
-            sun = new SolarTerminatorLayer({
-                map: map
-            }, "SunButton");
-            sun.startup();
-      	});
-        
-      	fx.fadeOut({
-      		node : "splash",
-      		duration : 500,
-      		onEnd : domConstruct.destroy
-      	}).play();        
+        var map = new Map("map", {
+          basemap: "osm",
+          center: [-40, 20],
+          zoom: 4
+        });
+
+        var happySun = new SolarTerminator({
+          map: map
+        }, "SunButton");
+        happySun.startup();
+
+        fx.fadeOut({
+          node: "splash",
+          duration: 500,
+          onEnd: domConstruct.destroy
+        }).play();
       });
     </script>
   </body>
