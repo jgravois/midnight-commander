@@ -276,6 +276,9 @@ define({
                 },
                 esriGeocoderName: "Esri World Geocoder"
             },
+            SolarTerminator: {
+                buttonTitle: "Solar Terminator"
+            },
             HistogramTimeSlider: {
                 NLS_range: "Range",
                 NLS_cumulative: "Cumulative",
