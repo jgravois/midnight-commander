@@ -1,10 +1,10 @@
 /*
 to do
-      get rid of 'locate' in CSS references
-      write doc like like driskulls
+      get rid of 'locate' in CSS references - done
+      write doc like driskulls
       confirm whether public methods operate as expected (ie. with time slider)
       get events emitting
-      modify CSS when the sun button is turned on/being hovered over
+      modify CSS when the sun button is turned on/being hovered over - almost done
 
       resources:
       http://www.arcgis.com/home/item.html?id=6c65b0f17ffc4bfdb71f60ca64d40bcc
@@ -75,7 +75,7 @@ define([
             declaredClass: "esri.dijit.SolarTerminator",
             templateString: dijitTemplate,
             options: {
-                theme: "LocateButton",
+                theme: "SolarButton",
                 id: null,
                 map: null,
                 dateTime: null,
@@ -103,7 +103,7 @@ define([
                 this.set("visible", false);
                 this._css = {
                     container: "solarTerminatorContainer",
-                    solar: "zoomLocateButton"
+                    solar: "zoomSolarButton"
                 };
             },
             // bind listener for button to action

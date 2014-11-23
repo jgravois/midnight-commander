@@ -1,8 +1,8 @@
-.LocateButton span {
+.SolarButton span {
 	display:none;
 }
 
-.LocateButton .zoomLocateButton {
+.SolarButton .zoomSolarButton {
 	padding:2px;
 	width:30px;
 	height:30px;
@@ -13,21 +13,24 @@
 	-ms-user-select:none;
 	user-select:none;
 	cursor:pointer;
-	-webkit-border-radius:5px;
-	-moz-border-radius:5px;
-	-o-border-radius:5px;
-	border-radius:5px;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+	-o-border-radius:2px;
+	border-radius:2px;
+	border: solid 0.1em;
 	background-image:url(../images/sun.png);
 	background-position:center center;
 	background-repeat:no-repeat;
 }
 
-.LocateButton .zoomLocateButton:hover {
+.SolarButton .zoomSolarButton:hover {
 	background-color:#333;
 	background-color:rgba(102,102,102,0.90);
+	border: solid 0.1em;
+	border-color: green
 }
 
-.LocateButton .zoomLocateButton:active {
+.SolarButton .zoomSolarButton:active {
 	background-color:#ccc;
 	background-color:rgba(102,102,102,0.60);
 }
