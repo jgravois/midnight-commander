@@ -4,7 +4,7 @@ to do
       write doc like driskulls
       confirm whether public methods operate as expected (ie. with time slider)
       get events emitting
-      modify CSS when the sun button is turned on/being hovered over - almost done
+      modify CSS when the sun button is turned on/being hovered over - lame, but done
 
       resources:
       http://www.arcgis.com/home/item.html?id=6c65b0f17ffc4bfdb71f60ca64d40bcc
@@ -193,9 +193,11 @@ define([
                 if (this.visible) {
                     this.refresh();
                     this._attachInterval();
+                    //domClass.add(this._solarNode, "zoomSolarButtonOn");
                 } else {
                     this._detachInterval();
                     this.get("map").getLayer("nightGraphicLayer").clear();
+                    //domClass.remove(this._solarNode, "zoomSolarButtonOn");
                 }
             },
 
