@@ -11,7 +11,7 @@ see it in action [here](https://jgravois.github.io/midnight-commander/)
 
 Basic use
 
-```
+```js
 var sun = new SolarTerminatorLayer({
   map: map
 }, "SunButton");
@@ -25,12 +25,6 @@ sun.startup();
 * Notepad or HTML editor
 * A little background with Javascript
 * Experience with the [ArcGIS Javascript API](http://www.esri.com/) would help.
-
-## Resources
-
-* [ArcGIS for JavaScript API Resource Center](http://help.arcgis.com/en/webapi/javascript/arcgis/index.html)
-* [ArcGIS Blog](http://blogs.esri.com/esri/arcgis/)
-* [twitter@esri](http://twitter.com/esri)
 
 ## Issues
 
